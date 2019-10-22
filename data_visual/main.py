@@ -1,10 +1,10 @@
 # _*_ coding: utf-8 _*_
 
-from data_visuals.simulator import Simulator
-from data_visuals.physical_node import PhysicalNode
-from data_visuals.stretcher import Stretcher 
-from data_visuals.attractor import Attractor
-from data_visuals.graph import Graph
+from data_visual.simulator import Simulator
+from data_visual.physical_node import PhysicalNode
+from data_visual.rubberband import Rubberband
+from data_visual.attractor import Attractor
+from data_visual.graph import Graph
 
 NUM_NODES = 6
 LABELS = [i for i in range(0, NUM_NODES)]
@@ -21,18 +21,18 @@ def addForceReceiversTo(simulator):
 
 def addForceEmittersTo(simulator):
     addRepellers(simulator)
-    addStretchers(simulator)
+    addRubberBands(simulator)
     addCenterGravity(simulator)
 
 def addRepellers(simulator):
     for node in l.nodes:
         simulator.registerEmitter(node)
 
-def addStretchers(simulator)
+def addRubberBands(simulator)
     for edge in EDGES:
         nodeA = l.nodes[edge[0]]
         nodeB = l.nodes[edge[1]]
-        simulator.registerEmitter(Stretcher(nodeA, nodeB))
+        simulator.registerEmitter(Rubberband(nodeA, nodeB))
 
 def addAttracter(simulator):
     centerGravity = Attractor()
