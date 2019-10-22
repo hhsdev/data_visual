@@ -36,7 +36,6 @@ def addRubberBands(simulator)
 
 def addAttracter(simulator):
     centerGravity = Attractor()
-    centerGravity.isStatic = True
     simulator.registerEmitter(centerGravity)
     
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 # _*_ coding: utf-8 _*_
 
 class Simulator(object):
+    threshold = 0.1
     def __init__(self):
         self.forceEmitters = []
         self.forceReceivers = []
@@ -25,11 +26,15 @@ class Simulator(object):
         self.ticks += 1
     
     def shouldStopSimulation():
-        threshold = 0.1
         if self.ticks < 5:
             return False
         for receiver in self.forceReceivers:
             if receiver.velocity > threshold:
                 return False
         return True
+    
+    def registerEmitter(self, emitter):
+        self.forceEmitters.append(emitter)
 
+    def registerReceiver(self, receiver):
+        self.forceReceivers.append(receiver)

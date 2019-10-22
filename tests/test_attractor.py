@@ -3,13 +3,13 @@
 import pytest
 from pytest import approx
 
-from data_visual.repeller import Repeller
+from data_visual.attractor import Attractor
 from data_visual.physical_object import PhysicalObject
 from data_visual.vec2 import Vec2
 
 
 allInputsSetToOne = {
-        'repeller': {
+        'attractor': {
             'intensity': 1,
             'position': Vec2(0, 0),
         },
@@ -19,12 +19,12 @@ allInputsSetToOne = {
         },
 
         'result': {
-            'force': Vec2(1, 0),
+            'force': Vec2(-1, 0),
         }
 }
 
 allInputsSetToZero = {
-        'repeller': {
+        'attractor': {
             'intensity': 0,
             'position': Vec2(0, 0),
         },
@@ -39,7 +39,7 @@ allInputsSetToZero = {
 } 
 
 randomTestCase1 = {
-        'repeller': {
+        'attractor': {
             'intensity': 1.23,
             'position': Vec2(1.2, 3.5),
         },
@@ -49,7 +49,7 @@ randomTestCase1 = {
         },
 
         'result': {
-            'force': Vec2(1.178020e-1, 3.416259)
+            'force': Vec2(-1.178020e-1, -3.416259)
         }
 }
 
@@ -59,14 +59,14 @@ randomTestCase1 = {
     randomTestCase1
 ])
 def testActOn(fixture):
-    repeller = Repeller(
-            fixture['repeller']['intensity'],
-            fixture['repeller']['position'])
+    attractor = Attractor(
+            fixture['attractor']['intensity'],
+            fixture['attractor']['position'])
 
     objectToMove = PhysicalObject(
             fixture['receiver']['position'],
             fixture['receiver']['mass'])
-    repeller.actOn(objectToMove)
+    attractor.actOn(objectToMove)
     
     expectedForce = fixture['result']['force']
     assert objectToMove.force.x == approx(expectedForce.x)
