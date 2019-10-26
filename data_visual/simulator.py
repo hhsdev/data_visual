@@ -1,40 +1,58 @@
 # _*_ coding: utf-8 _*_
+from data_visual.setting import Setting
 
 class Simulator(object):
-    threshold = 0.1
-    def __init__(self):
-        self.forceEmitters = []
-        self.forceReceivers = []
-        self.eventListeners = {}
+    defaults = Setting({
+        'threshold': 0.1,
+        'min_ticks': 5,
+        'max_ticks': 300
+    })
+
+    def __init__(self, settings=Setting({})):
+        self.settings = self.defaults
+        self.settings.override(settings)
+
         self.ticks = 0
 
+        self.event_listeners = { 'tick': [] }
+        self.force_receivers = []
+        self.force_emitters = []
+
     def simulate(self):
-        while not self.shouldStopSimulation():
-            self.simulateTick()
+        while not self.should_stop():
+            self.simulate_tick()
+    
+    def simulate_tick(self):
+        for receiver in self.force_receivers:
+            receiver.force = 0j
+            receiver.acceleration = 0j
 
-    def simulateTick(self):
-        for emitter in self.forceEmitters:
-            for receiver in self.forceReceivers:
-                emitter.actOn(receiver)
+        for emitter in self.force_emitters:
+            for receiver in self.force_receivers:
+                emitter.act_on(receiver)
 
-        for receiver in self.forceReceivers:
-            receiver.move()
+        for receiver in self.force_receivers:
+            receiver.react_to_force()
 
-        for listener in self.eventListeners['tick']:
+        for listener in self.event_listeners["tick"]:
             listener(self)
-
         self.ticks += 1
     
-    def shouldStopSimulation():
-        if self.ticks < 5:
+    def should_stop(self):
+        if self.ticks < self.settings["min_ticks"]:
             return False
-        for receiver in self.forceReceivers:
-            if receiver.velocity > threshold:
+
+        if self.ticks > self.settings["max_ticks"]:
+            return True
+
+        for receiver in self.force_receivers:
+            if abs(receiver.velocity) > self.settings["threshold"]:
                 return False
         return True
     
-    def registerEmitter(self, emitter):
-        self.forceEmitters.append(emitter)
+    def register_emitter(self, emitter):
+        self.force_emitters.append(emitter)
 
-    def registerReceiver(self, receiver):
-        self.forceReceivers.append(receiver)
+    def register_receiver(self, receiver):
+        self.force_receivers.append(receiver)
+

@@ -2,30 +2,33 @@
 
 from data_visual.force_emitter import ForceEmitter
 from data_visual.physical_object import PhysicalObject
-from data_visual.vec2 import Vec2
 
 class Repeller(ForceEmitter, PhysicalObject):
-    minimumDistance = 0.1
-    def __init__(self, intensity, position=Vec2(0, 0)):
+    min_distance = 0.05
+    def __init__(self, position, intensity=1, mass=1):
         ForceEmitter.__init__(self)
-        PhysicalObject.__init__(self, position)
+        PhysicalObject.__init__(self, position, mass)
         self.intensity = intensity
     
-    def actOn(self, target):
+    def act_on(self, target):
         try:
-            target.force += self.calculateForceOn(target)
+            force = self.calculate_force_on(target)
+            target.force += force
         except ZeroDivisionError:
-            target.force += Vec2(0, 0)
+            pass
        
-    def calculateForceOn(self, target):
-        distanceVector = target.position - self.position
-        distanceFromTarget = abs(distanceVector)
-        
-        forceMagnitude = self.calculateForceMagnitude(
-                target, distanceFromTarget)
-        forceUnitVector = distanceVector / distanceFromTarget
-        return forceMagnitude * forceUnitVector 
+    def calculate_force_on(self, target):
+        distance = target.position - self.position
+        distance_magnitude = abs(distance)
+        if distance_magnitude < self.min_distance:
+            distance_magnitude = self.min_distance
 
-    def calculateForceMagnitude(self, target, distance):
+        force_magnitude = self.calculate_force_magnitude(
+                target, distance_magnitude)
+        force_unit_vector = distance / distance_magnitude
+        return force_magnitude * force_unit_vector 
+
+    def calculate_force_magnitude(self, target, distance):
         return (self.intensity * target.mass) / (distance ** 2)
+
 
