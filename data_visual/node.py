@@ -7,14 +7,14 @@ class Node(object):
         self.label = label
         self.neighbours = [] 
 
-    def isNeighboursWith(self, node):
+    def is_neighbours_with(self, node):
         return node in self.neighbours
 
-    def addNeighbour(self, node):
-        if not self.isNeighboursWith(node):
-            self.addNeighbourNoCheck(node)
+    def add_neighbour(self, node):
+        if not self.is_neighbours_with(node):
+            self.add_neighbour_no_check(node)
    
-    def addNeighbourNoCheck(self, node):
+    def add_neighbour_no_check(self, node):
         self.neighbours.append(node)
 
     def __repr__(self):
@@ -28,4 +28,5 @@ class Node(object):
     
     def __hash__(self):
         return hash(self.label)
+
 
