@@ -7,6 +7,9 @@ authors = ["hhsdev <heinhtetsoe.dev@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.6"
 bitarray = "^1.0"
+networkx = "^2.4"
+pillow = "^6.2"
+click = "^7.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
