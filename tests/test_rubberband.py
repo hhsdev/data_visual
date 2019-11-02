@@ -1,34 +1,33 @@
 # _*_ coding: utf-8 _*_
 import pytest
 from pytest import approx
-from data_visual.vec2 import Vec2
 from data_visual.rubberband import Rubberband
 
 test_case1 = {
     'intensity': 1,
     'a': {
-        'position': Vec2(0, 0),
-        'velocity': Vec2(0, 0),
-        'force': Vec2(1, 0)
+        'position': 0j,
+        'velocity': 0j,
+        'force': 1 + 0j
     },
     'b': {
-        'position': Vec2(1, 0),
-        'velocity': Vec2(0, 0),
-        'force': Vec2(-1, 0)
+        'position': 1 + 0j,
+        'velocity': 0j,
+        'force': -1 + 0j
     }
 }
 
 test_case2 = {
     'intensity': 244.35,
     'a': {
-        'position': Vec2(1.2, 0.435),
-        'velocity': Vec2(0, 0),
-        'force': Vec2(439.83, 104964.20775)
+        'position': 1.2 + 0.435j,
+        'velocity': 0j,
+        'force': 4.3983e2 + 1.0496421e5j
     },
     'b': {
-        'position': Vec2(3, 430),
-        'velocity': Vec2(0, 0),
-        'force': Vec2(-439.83, -104964.20775)
+        'position': 3 + 430j,
+        'velocity': 0j,
+        'force': -4.3983e2 + -1.0496421e5j
     }
 }
 
@@ -38,7 +37,7 @@ class MockObject(object):
         self.label = label
         self.position = position
         self.velocity = velocity
-        self.force = Vec2()
+        self.force = 0j
     
     def __eq__(self, other):
         return self.label == other.label
@@ -61,9 +60,6 @@ def test_act_on(fixture):
 
     rubberband.act_on(object_a)
     rubberband.act_on(object_b)
-
-    assert object_a.force.x == approx(fixture['a']['force'].x)
-    assert object_a.force.y == approx(fixture['a']['force'].y)
-
-    assert object_b.force.x == approx(fixture['b']['force'].x)
-    assert object_b.force.y == approx(fixture['b']['force'].y)
+    
+    assert object_a.force == approx(fixture['a']['force'])
+    assert object_b.force == approx(fixture['b']['force'])

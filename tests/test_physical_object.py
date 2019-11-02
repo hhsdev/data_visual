@@ -1,7 +1,6 @@
 # _*_ coding: utf-8 _*_
 
 from data_visual.physical_object import PhysicalObject
-from data_visual.vec2 import Vec2
 
 import pytest
 
