@@ -62,3 +62,7 @@ target/
 
 # Generated images
 images/
+
+# IDE related files
+.vscode/
+*.swp
