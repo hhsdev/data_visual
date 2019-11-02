@@ -2,7 +2,7 @@
 
 class Setting(object):
     """Object that holds configuration settings"""
-    def __init__(self, source):
+    def __init__(self, source={}):
         object.__init__(self)
         if isinstance(source, dict):
             self.load_from_dict(source)
