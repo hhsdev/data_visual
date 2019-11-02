@@ -8,3 +8,6 @@ class ForceEmitter(object):
 
     def act_on(self, thing):
         raise NotImplementedError
+
+    def unit(self, comp):
+        return comp / abs(comp)
