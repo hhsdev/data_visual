@@ -15,9 +15,13 @@ class Rubberband(ForceEmitter):
             return
         force = self.calculate_force_on(target)
         target.force += force
+    
+    def __call__(self, _):
+        self.act_on(self.a)
+        self.act_on(self.b)
 
     def calculate_force_on(self, target):
-        other_target = self._getOtherTarget(target)
+        other_target = self._get_other_target(target)
         distance_vector = other_target.position - target.position
         spring_force = distance_vector * self.intensity
         dampening_force = self.calculate_dampening(target)
@@ -26,7 +30,7 @@ class Rubberband(ForceEmitter):
     def calculate_dampening(self, target):
         return -2 * sqrt(self.intensity) * target.velocity
 
-    def _getOtherTarget(self, target):
+    def _get_other_target(self, target):
         if target == self.a:
             return self.b
         return self.a
