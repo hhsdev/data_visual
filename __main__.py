@@ -19,16 +19,17 @@ from PIL import ImageFilter
 config = Setting(
     {
         "gravity": {"intensity": 1e7},
-        "node": {"intensity": 5000},
+        "node": {"intensity": 7000},
         "edge": {"intensity": 0.04},
     })
 
 fr_config = Setting(
     {
-        "width": 1920,
-        "height": 1080,
-        "c": 0.2
+        "width": 500,
+        "height": 500,
+        "c": 0.5
     })
+
 
 def rand_complex():
     return complex(randrange(0, 500), randrange(0, 500))
@@ -48,20 +49,20 @@ def get_grid_graph(n, m):
 
 
 # -------------------- bg ----------------------
-#bg = nx.complete_graph(15)
-#bg = nx.balanced_tree(2, 7)
-bg = nx.cycle_graph(125)
-#bg = nx.sedgewick_maze_graph()
-#bg = nx.tetrahedral_graph()
-#bg = FakeGraph()
-#bg = nx.petersen_graph()
+# bg = nx.complete_graph(20)
+# bg = nx.balanced_tree(2, 7)
+# bg = nx.cycle_graph(125)
+# bg = nx.sedgewick_maze_graph()
+# bg = nx.tetrahedral_graph()
+# bg = nx.petersen_graph()
+bg = nx.dorogovtsev_goltsev_mendes_graph(4)
+
+
 class G:
     def __init__(self, nodes, edges):
         self.nodes = nodes
         self.edges = edges
 
-
-#bg = nx.dorogovtsev_goltsev_mendes_graph(6)
 
 NODES, EDGES = build_from_nx(bg, fr_config)
 
@@ -82,7 +83,7 @@ def add_center_gravity(simulator):
 def add_force_emitters_to(simulator):
     add_repellers(simulator)
     add_rubber_bands(simulator)
-    #add_center_gravity(simulator)
+    # add_center_gravity(simulator)
 
 
 def add_repellers(simulator):
@@ -103,6 +104,8 @@ def simulate_with_progress_bar(simulator):
 
 
 frames = []
+
+
 def gif_on_end(simulator):
     print("\n  Writing gif... ", end="", flush=True)
     frames[0].save(
@@ -114,19 +117,20 @@ def gif_on_end(simulator):
         loop=0)
     print("saved to ./images/move.gif", flush=True)
 
-def enable_gif(artist, simulator):
-    def draw_frame(_): frames.append(artist.draw(graph))
-    simulator.event_listeners["tick"].append(draw_frame)
-    simulator.event_listeners["end"].append(gif_on_end)
-    
 
-def main():
+def enable_gif(artist, simulator):
+    simulator.event_listeners["tick"].append(
+        lambda: frames.append(artist.draw(graph)))
+    simulator.event_listeners["end"].append(gif_on_end)
+
+
+if __name__ == "__main__":
     artist_settings = Setting({
-        "background": "white",
+        "background": "black",
         "width": fr_config["width"],
         "height": fr_config["height"],
-        "node": {"radius": 3, "color": (0x46, 0x63, 0x65)},
-        "edge": {"color": (0x9d, 0x99, 0xb6)},
+        "node": {"radius": 5, "color": 'white'},
+        "edge": {"color": 'gray'}
     })
 
     artist = GraphArtist(artist_settings)
@@ -143,7 +147,3 @@ def main():
     print("  Writing final image... ", end="", flush=True)
     image.save("./images/result.png")
     print("saved to ./images/result.png", flush=True)
-
-if __name__ == "__main__":
-    #cProfile.run("main()", "st2")
-    main()
