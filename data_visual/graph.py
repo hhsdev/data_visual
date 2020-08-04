@@ -100,7 +100,6 @@ if __name__ == "__main__":
     l = SimpleGraph([i for i in range(0, 6)], False)
     l.add_edges([ [0, 5], [0, 4], [0, 1], [1, 4], [1, 2], [2, 3], [3, 4] ])
     breadth_first_search(l, pne, pe, pnl)
-    print('\n\n')
     traverser = DfsTraverser()
     traverser.early_node_processor = pne
     traverser.late_node_processor = pnl

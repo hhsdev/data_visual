@@ -50,9 +50,9 @@ class GraphArtist(object):
         center = node.position
         radius = self.settings["node"]["radius"]
 
-        x0 = center.real - radius 
-        x1 = center.real + radius 
-        y0 = center.imag - radius 
+        x0 = center.real - radius
+        x1 = center.real + radius
+        y0 = center.imag - radius
         y1 = center.imag + radius
 
         self.pen.ellipse(
