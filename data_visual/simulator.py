@@ -17,11 +17,16 @@ class Simulator(object):
         self.force_receivers = []
         self.force_emitters = []
         self.late_force_emitters = []
+    
 
-    def simulate(self, realistic=True):
+    def run(self, *, realistic=True):
         while not self.should_stop():
             self.simulate_tick(realistic)
         self.emit_event("end")
+    
+    def run_iter(self, *, realistic=True):
+        while not self.should_stop():
+            yield self.simulate_tick(realistic)
 
     def emit_event(self, event_name):
         for listener in self.event_listeners[event_name]:
@@ -70,3 +75,4 @@ class Simulator(object):
 
     def register_receiver(self, receiver):
         self.force_receivers.append(receiver)
+

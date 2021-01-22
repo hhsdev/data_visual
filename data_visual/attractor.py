@@ -36,6 +36,3 @@ class Attractor(ForceEmitter, PhysicalObject):
     def __repr__(self):
         return 'Attractor(%s, %s)' % (self.intensity, self.position)
 
-
-
-

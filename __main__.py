@@ -16,6 +16,8 @@ from data_visual.fr.builder import build_from_nx
 from random import randrange
 from unittest.mock import MagicMock
 from PIL import ImageFilter
+
+
 config = Setting(
     {
         "gravity": {"intensity": 1e7},
@@ -58,12 +60,6 @@ def get_grid_graph(n, m):
 bg = nx.dorogovtsev_goltsev_mendes_graph(4)
 
 
-class G:
-    def __init__(self, nodes, edges):
-        self.nodes = nodes
-        self.edges = edges
-
-
 NODES, EDGES = build_from_nx(bg, fr_config)
 
 print("  Simulating %s nodes and %s edges..." % (len(NODES), len(EDGES)))
@@ -100,7 +96,7 @@ def simulate_with_progress_bar(simulator):
     with click.progressbar(length=simulator.settings["max_ticks"]) as bar:
         def update_progress(simulator): bar.update(1)
         simulator.event_listeners["tick"].append(update_progress)
-        simulator.simulate(False)
+        simulator.run(realistic=False)
 
 
 frames = []
@@ -120,7 +116,7 @@ def gif_on_end(simulator):
 
 def enable_gif(artist, simulator):
     simulator.event_listeners["tick"].append(
-        lambda: frames.append(artist.draw(graph)))
+        lambda _: frames.append(artist.draw(graph)))
     simulator.event_listeners["end"].append(gif_on_end)
 
 
